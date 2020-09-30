@@ -103,9 +103,9 @@ function findFailedCommits(projects, commitsInPR, ignoreCase) {
 }
 
 function createProjectRegex(project) {
-  return new RegExp(project + '\\')
+  return new RegExp(project)
 }
 
 function createWrappedProjectRegex(project) {
-  return new RegExp('\\' + project + '\\')
+  return new RegExp('\' + project + '\')
 }

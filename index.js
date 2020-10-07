@@ -107,5 +107,5 @@ function createProjectRegex(project) {
 }
 
 function createWrappedProjectRegex(project) {
-  return new RegExp('\\' + project + '-\\d*\\')
+  return new RegExp('\\' + project + '-\\d*')
 }

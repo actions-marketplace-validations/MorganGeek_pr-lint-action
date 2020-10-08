@@ -2,9 +2,9 @@
 
 A GitHub Action that verifies your pull request contains a reference to a ticket.  You can use this to (optionally) check:
 
-* The PR title contains `[PROJ-1234]`
+* The PR title contains `PROJ-1234`
 * The branch name contains `PROJ-1234` or `PROJ_1234`
-* Each commit contains `[PROJ-1234]`
+* Each commit contains `PROJ-1234`
 
 
 

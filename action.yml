@@ -1,0 +1,9 @@
+name: 'PR Lint GitHub Action'
+description: 'PR Lint for GitHub Actions'
+author: 'MorganGeek'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: 'edit-3'
+  color: 'blue'

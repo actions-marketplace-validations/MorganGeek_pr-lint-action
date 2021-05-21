@@ -1,5 +1,5 @@
-name: 'PR Lint GitHub Action'
-description: 'PR Lint for GitHub Actions'
+name: 'PR Lint GitHub Action - POC'
+description: 'PR Lint for GitHub Actions - POC'
 author: 'MorganGeek'
 runs:
   using: 'docker'

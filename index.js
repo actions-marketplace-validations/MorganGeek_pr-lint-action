@@ -8,7 +8,8 @@ const defaults = {
   check_title: true,
   check_branch: false,
   check_commits: false,
-  ignore_case: false
+  ignore_case: false,
+  check_latest_commit: false,
 }
 
 Toolkit.run(
@@ -58,7 +59,7 @@ Toolkit.run(
     })()
 
     const commits_passed = await (async () => {
-      // check the branch matches PROJECT-1234 or PROJECT_1234 somewhere
+      // check the commits match PROJECT-1234 or PROJECT_1234 somewhere
       if (config.check_commits) {
         const listCommitsParams = {
           owner: repository.owner.login,
@@ -68,6 +69,36 @@ Toolkit.run(
         const commitsInPR = (await tools.github.pulls.listCommits(listCommitsParams)).data
         const failedCommits = findFailedCommits(projects, commitsInPR, config.ignore_case);
 
+        if(failedCommits.length) {
+          failedCommits.forEach(
+            failedCommit => tools.log('Commit message \'' + failedCommit + '\' does not contain an approved project')
+          )
+          return false
+        }
+      }
+      return true
+    })()
+
+    const latest_commit_passed = await (async () => {
+      // check the latest commit matches PROJECT-1234 or PROJECT_1234 somewhere
+      if (config.check_latest_commit) {
+        const listCommitsParams = {
+          owner: repository.owner.login,
+          repo: repository.name,
+          pull_number: pull_request.number
+        }
+        const commitsInPR = (await tools.github.pulls.listCommits(listCommitsParams)).data
+        const latestCommit = commitsInPR[commitsInPR.length-1]
+        const failedCommits = findFailedCommits(projects, commitsInPR, config.ignore_case);
+
+        const failedCommits = [];
+        projects.forEach(project => {
+          const commitMessage = ignoreCase ? latestCommit.commit.message.toLowerCase() : latestCommit.commit.message
+          if (!commitMessage.match(createProjectRegex(project))) {
+            failedCommits.push(commitMessage);
+          }
+        });
+        
         if(failedCommits.length) {
           failedCommits.forEach(
             failedCommit => tools.log('Commit message \'' + failedCommit + '\' does not contain an approved project')
